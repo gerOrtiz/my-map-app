@@ -1,5 +1,6 @@
 import { useAuth } from "@/src/context/AuthContext";
 import { Image } from "expo-image";
+import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 
@@ -12,82 +13,47 @@ export default function LoginScreen() {
 
 	};
 
-	// return (
-	// 	<ParallaxScrollView
-	// 		headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-	// 		headerImage={
-	// 			<Image
-	// 				source={require('@/src/assets/images/android-icon-foreground.png')}
-	// 				style={styles.reactLogo}
-	// 			/>
-	// 		}>
-	// 		<ThemedView style={styles.titleContainer}>
-	// 			<ThemedText type="title">Map tracker app</ThemedText>
-	// 		</ThemedView>
-	// 		<ThemedView style={styles.titleContainer}>
-	// 			<ThemedText type="subtitle">Login</ThemedText>
-	// 		</ThemedView>
-	// 		<ThemedView style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-	// 			<ThemedText type="default" >Don't have an account?</ThemedText>
-	// 			<ThemedText type="link" >
-	// 				<Link href="/(auth)/signup" >Sign up</Link>
-	// 			</ThemedText>
-
-	// 		</ThemedView>
-	// 		<ThemedView >
-	// 			<AuthenticationForm onSubmit={handleSignIn} buttonTitle="Log in" isLoading={loading} />
-	// 		</ThemedView>
-	// 	</ParallaxScrollView>
-	// );
 	return (
-		<View style={{ flex: 1, flexDirection: 'column' }}>
-			<View style={{ flex: 1 }}>
-				<Image source={require('@/src/assets/images/icecream-truck2.jpg')} style={{ width: '100%', height: '100%' }} />
+		<View style={styles.container}>
+			<View style={{ flex: 2 }}>
+				<Image source={require('@/src/assets/images/icecream-truck2.jpg')} style={styles.image} />
+				<LinearGradient colors={['transparent', 'rgba(255,255,255,0.9)']} />
 			</View>
-			<View style={{ flex: 2, flexDirection: 'column' }}>
-				<View style={{ flex: 2, flexDirection: 'column', justifyContent: 'center', gap: 8 }}>
-					<Text variant="headlineMedium">Find the nearest ice cream truck to you</Text>
-					<Text variant="titleLarge">Explore the map to find the nearest truck based on your location</Text>
-				</View>
-				<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignContent: 'center', gap: 4, }}>
-					<View style={{ height: '100%', justifyContent: 'center' }}><Button mode="elevated" buttonColor="blue" textColor="white" >Login</Button></View>
-					<View style={{ height: '100%', justifyContent: 'center' }}><Button mode="elevated" >Register</Button></View>
-				</View>
+			<View style={styles.textSection}>
+				<Text variant="headlineMedium" style={{ color: 'blue', textAlign: 'center' }} >Find Ice Cream Trucks Near You</Text>
+				<Text variant="titleLarge" style={{ color: 'pink', textAlign: 'center' }}>Track real-time locations and never miss your favorite treat</Text>
+			</View>
+			<View style={styles.buttonSection}>
+				<View style={{ height: '100%', justifyContent: 'center' }}><Button mode="elevated" buttonColor="#FF69B4" textColor="white" >Login</Button></View>
+				<View style={{ height: '100%', justifyContent: 'center' }}><Button mode="elevated" buttonColor="#FFB6C1" >Register</Button></View>
 			</View>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
-	reactLogo: {
-		height: 178,
-		width: 290,
-		alignSelf: 'center',
-		justifyContent: 'flex-end',
-		// bottom: 0,
-		// left: 0,
-		// right: 0,
-		// position: 'absolute',
+	container: {
+		flex: 1,
+		flexDirection: 'column',
+		paddingVertical: 20,
+		paddingHorizontal: 12,
 	},
-	titleContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
+	imageSection: {
+		flex: 1
+	},
+	image: {
+		width: '100%', height: '100%', borderRadius: 8
+	},
+	textSection: {
+		flex: 1,
+		flexDirection: 'column',
+		justifyContent: 'center',
 		gap: 8,
 	},
-	button: {
-		borderRadius: 18,
-		padding: 10,
-		marginTop: 15,
-		width: '100%',
-		alignItems: 'center',
-		alignSelf: 'center',
-		elevation: 2,
-		shadowColor: 'rgba(0, 0, 0, 1)',
-		shadowOffset: { width: 5, height: 10 },
-		shadowOpacity: 0.3,
-		shadowRadius: 3.5,
-	}, buttonText: {
-		color: '#fff',
-		fontSize: 14
+	buttonSection: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-evenly',
+		alignContent: 'center',
 	}
 });
