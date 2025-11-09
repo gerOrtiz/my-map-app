@@ -18,7 +18,7 @@ export default function TabLayout() {
 		tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
 		headerShown: false,
 		tabBarStyle: {
-			marginBottom: 6,
+			marginBottom: 12,
 			width: '50%',
 			position: 'absolute',
 			transform: [{ translateX: 90 }],

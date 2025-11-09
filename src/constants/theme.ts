@@ -10,7 +10,11 @@ const tintColorDark = '#fff';
 
 export const Colors = {
   light: {
-    text: '#11181C',
+    title: 'rgba(192, 7, 99, 1)',
+    subtitle: 'pink',
+    text: 'rgba(62, 178, 255, 1)',
+    buttonPrimary: '#FF69B4',
+    buttonSecondary: '#FFB6C1',
     background: '#fff',
     tint: tintColorLight,
     icon: '#687076',
