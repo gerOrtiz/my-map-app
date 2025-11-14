@@ -43,11 +43,12 @@ export default function IndexScreen() {
 
 const styles = StyleSheet.create({
 	title: {
-		textShadowColor: 'rgba(58, 57, 57, 0.6)', // Black with 75% opacity
+		textShadowColor: 'rgba(202, 202, 0, 0.6)', // Black with 75% opacity
 		textShadowOffset: { width: 1, height: 1 },
 		textShadowRadius: 2,
 		textAlign: 'center',
-		marginBottom: 15
+		marginBottom: 1,
+		fontFamily: 'Sweet-Affogato'
 	},
 	subtitle: {
 		textDecorationLine: 'none',

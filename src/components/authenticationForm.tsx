@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Text, View } from "react-native";
 import { Button, DefaultTheme, TextInput as Input, Provider as PaperProvider } from "react-native-paper";
+import { useAuth } from "../context/AuthContext";
 
 interface Props {
 	onSubmit: (email: string, password: string) => Promise<void>;
@@ -11,6 +12,7 @@ interface Props {
 export default function AuthenticationForm({ onSubmit, buttonTitle, isLoading }: Props) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const { error } = useAuth();
 
 	const handlePress = async () => {
 		onSubmit(email, password);
@@ -71,7 +73,11 @@ export default function AuthenticationForm({ onSubmit, buttonTitle, isLoading }:
 				>
 					{isLoading ? '' : buttonTitle}
 				</Button>
+
 			</View>
+			{error && (<View style={{ width: '100%' }}>
+				<Text style={{ fontSize: 13, fontWeight: 600, color: 'red', textAlign: 'center' }}>Email or password invalid, try again.</Text>
+			</View>)}
 		</View>
 
 	</>);

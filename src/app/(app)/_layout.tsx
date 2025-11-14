@@ -16,14 +16,17 @@ export default function TabLayout() {
 
 	const options: BottomTabNavigationOptions = {
 		tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+		tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].inactiveTint,
 		headerShown: false,
 		tabBarStyle: {
 			marginBottom: 12,
 			width: '50%',
 			position: 'absolute',
 			transform: [{ translateX: 90 }],
-			elevation: 1,
-			backgroundColor: 'rgba(255, 255, 255, .8)',
+			elevation: 0,
+			borderColor: 'rgba(255, 200, 250, 0.75)',
+			borderWidth: 1,
+			backgroundColor: 'rgba(255, 255, 255, 0.51)',
 			borderRadius: 15,
 			shadowColor: 'rgba(0, 0, 0, 1)',
 			shadowOffset: { width: 5, height: 10 },
