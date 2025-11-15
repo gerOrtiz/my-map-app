@@ -1,18 +1,23 @@
+import { Colors } from '@/src/constants/theme';
 import { useActiveDrivers } from '@/src/hooks/use-active-drivers';
 import { Image } from 'expo-image';
-import { StyleSheet, View } from "react-native";
+import { StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import { Card } from 'react-native-paper';
+import { Card, Text } from 'react-native-paper';
 
+const colors = Colors.light;
 
 export default function CustomerMapScreen() {
 	const { drivers } = useActiveDrivers({ latitude: 19.024370626890853, longitude: -98.19173625706892 });
 	//19.024370626890853, -98.19173625706892
+
 	return (
-		<View style={{ flex: 1, padding: 8, marginVertical: 12 }}>
-			<Card style={{ flex: 1, padding: 5, borderRadius: 15 }} contentStyle={{ flex: 1 }} >
-				<Card.Title title="Trucks' location" style={{ flex: 1 }} />
-				<Card.Content style={{ flex: 10 }}>
+		<View style={{ flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background }}>
+			<Card style={{
+				flex: 1, borderRadius: 15
+			}} contentStyle={{ flex: 1, }} >
+				<Card.Content style={{ flex: 1 }}>
+					<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
 					<MapView
 						style={{ flex: 1 }}
 						initialRegion={{
@@ -116,6 +121,15 @@ const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		paddingVertical: 20,
 		backgroundColor: '#fff'
+	},
+	title: {
+		textShadowColor: 'rgba(202, 202, 0, 0.6)',
+		textShadowOffset: { width: 1, height: 1 },
+		textShadowRadius: 2,
+		textAlign: 'center',
+		marginBottom: 10,
+		fontFamily: 'Sweet-Affogato',
+		color: colors.title
 	},
 	map: {
 		width: '100%',

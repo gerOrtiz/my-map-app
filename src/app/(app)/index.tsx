@@ -1,115 +1,107 @@
-import { Image } from 'expo-image';
-import { Platform, Pressable, StyleSheet, Text } from 'react-native';
+import { ImageBackground } from 'expo-image';
+import { Pressable, ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 
-import { HelloWave } from '@/src/components/hello-wave';
-import ParallaxScrollView from '@/src/components/parallax-scroll-view';
-import { ThemedText } from '@/src/components/themed-text';
-import { ThemedView } from '@/src/components/themed-view';
+import HomeCards from '@/src/components/user/home-cards';
+import { Colors } from '@/src/constants/theme';
 import { useAuth } from '@/src/context/AuthContext';
-import { Link } from 'expo-router';
-
+import { useRouter } from 'expo-router';
+import { useMemo } from 'react';
+import { Icon, IconButton, Text } from 'react-native-paper';
+const colors = Colors.light;
 export default function HomeScreen() {
-  const { logOut } = useAuth();
+	const { logOut, user, userRole, loading } = useAuth();
+	const router = useRouter();
 
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-    } catch (error) {
-      console.error('Error signing out:', error);
-    }
-  };
-
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/src/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-        <Pressable onPress={handleSignOut}>
-          <Text style={{ color: 'red' }}>Sign out</Text>
-        </Pressable>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(app)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
+	const handleSignOut = async () => {
+		try {
+			await logOut();
+		} catch (error) {
+			console.error('Error signing out:', error);
+		}
+	};
 
 
-    </ParallaxScrollView>
-  );
+	const userCards = useMemo(() => {
+		return [{ background: '#a0d8bd', title: 'Requests', headline: '5 request', subtitle: 'Keep it that way to earn points!', icon: 'ice-cream' },
+		{ background: '#facaac', title: 'Total items bought', headline: '6', subtitle: '4 items left to gain one free popsicle', icon: 'ice-pop' }];
+	}, []);
+
+	const driverCards = useMemo(() => {
+		return [{ background: '#75b8e6', title: 'Trips', headline: '10 trips', subtitle: 'In the last 10 days', icon: 'map-marker-distance' },
+		{ background: '#b97ca0', title: 'Activity', headline: '11/11/25', subtitle: 'Last shift', icon: 'truck-outline' }];
+	}, []);
+
+	return (
+		<View style={styles.container}>
+			<ScrollView style={styles.scroll} contentContainerStyle={{ flexGrow: 1 }}>
+				{loading && (<Text>Loading...</Text>)}
+				<View>
+					<Text variant="headlineSmall" style={[styles.title]}>Frost find</Text>
+				</View>
+				<View style={styles.avatarSection}>
+					<View style={{ borderRadius: 50, minHeight: 50, padding: 0, backgroundColor: 'rgba(230, 230, 230, 0.8)' }}>
+						<ImageBackground source={require('@/src/assets/images/avatar1.png')}
+							contentPosition="center" contentFit="cover"
+							style={styles.avatarImage} >
+							<IconButton mode="contained-tonal" icon="pencil" size={12} contentStyle={{ padding: 1 }} style={styles.editButton} />
+						</ImageBackground>
+					</View>
+					<View style={{ flex: 1, flexDirection: 'column' }}>
+						<Text style={styles.avatarText} variant="titleLarge">Welcome,</Text>
+						<Text style={styles.avatarText} variant="titleMedium">{user?.email}</Text>
+					</View>
+
+				</View>
+				<View style={styles.userActionsSection}>
+					<Pressable style={styles.userButtons} onPress={handleSignOut}>
+						<Icon size={25} source="logout" color="black" />
+					</Pressable>
+					<Pressable style={styles.userButtons}>
+						<Icon size={25} source="cog" color="black" />
+					</Pressable>
+				</View>
+				<View style={{ flexDirection: 'column', gap: 15 }}>
+					{userRole === 'customer' ? (<HomeCards user={user} role={userRole} cards={userCards} />) : (<>
+						<HomeCards user={user} role={userRole} cards={driverCards} />
+					</>)}
+
+				</View>
+			</ScrollView>
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+	container: {
+		flex: 1, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background
+	}, scroll: {
+		flex: 1, padding: 12, overflow: 'visible'
+	},
+	title: {
+		textShadowColor: 'rgba(202, 202, 0, 0.6)',
+		textShadowOffset: { width: 1, height: 1 },
+		textShadowRadius: 2,
+		textAlign: 'center',
+		marginBottom: 1,
+		fontFamily: 'Sweet-Affogato',
+		color: colors.title
+	},
+	avatarSection: {
+		minHeight: 80, width: '100%', flexDirection: 'row', alignItems: 'center',
+		marginBottom: 0
+	},
+	avatarImage: {
+		borderRadius: 50, width: 60, height: 60
+	},
+	editButton: {
+		position: 'absolute', bottom: -10, right: -10, margin: 0
+	},
+	avatarText: {
+		textAlign: 'center',
+	},
+	userActionsSection: {
+		flexDirection: 'row', padding: 8, alignSelf: 'center', justifyContent: 'center', marginBottom: 20, gap: 15
+	}, userButtons: {
+		width: 50, height: 50, padding: 5, borderRadius: 50, backgroundColor: colors.buttonSecondary, alignItems: 'center', justifyContent: 'center'
+	},
 });

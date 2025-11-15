@@ -5,14 +5,23 @@
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
+const tintColorLight = 'rgba(255, 16, 183, 1)';
+const inactiveTintColorLight = 'rgba(236, 183, 220, 1)';
+
 const tintColorDark = '#fff';
+const inactiveTintColorDark = '#797878ff';
+
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    title: 'rgba(192, 7, 99, 1)',
+    subtitle: 'pink',
+    text: 'rgba(62, 178, 255, 1)',
+    buttonPrimary: '#b97ca0',
+    buttonSecondary: '#facdd2',
+    background: 'rgba(252, 182, 223, 0.9)',//E6A5CB
     tint: tintColorLight,
+    inactiveTint: inactiveTintColorLight,
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
@@ -21,6 +30,7 @@ export const Colors = {
     text: '#ECEDEE',
     background: '#151718',
     tint: tintColorDark,
+    inactiveTint: inactiveTintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
