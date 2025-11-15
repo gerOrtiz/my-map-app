@@ -269,7 +269,7 @@ This project is available for portfolio and educational purposes. Please contact
 
 ## 🙏 Acknowledgments
 
-- Ice cream truck illustration assets from [http://www.freepik.com "Designed by Artmonkey / Designed by pikisuperstar", https://pngtree.com]
+- Ice cream truck illustration assets from [Pikisuperstar](https://www.freepik.es/vector-gratis/ilustracion-mercado-comida-callejera-dibujada-mano_45979596.htm#fromView=search&page=2&position=14&uuid=fa1408f4-7147-46ee-8665-08c436748c14&query=ice+cream+truck), [Artmonkey](https://www.freepik.es/vector-gratis/diseno-furgoneta-helados_993497.htm#fromView=search&page=1&position=5&uuid=fa1408f4-7147-46ee-8665-08c436748c14&query=ice+cream+truck), [Nat Tanaes](https://pngtree.com/freepng/cute-sweet-pink-ice-cream-truck_7129347.html)
 - Map integration powered by Google Maps via react-native-maps
 - Firebase for real-time backend infrastructure
 - Expo team for incredible developer experience
