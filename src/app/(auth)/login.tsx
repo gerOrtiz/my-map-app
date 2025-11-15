@@ -23,7 +23,7 @@ export default function LoginScreen() {
 		<OnboardingView image="image3" showNavigation={true}>
 			<View style={styles.container}>
 				<View style={styles.loginForm}>
-					<Text variant="titleLarge" style={{ color: colors.title, textAlign: 'center' }}>Login</Text>
+					<Text variant="titleLarge" style={{ color: colors.title, textAlign: 'center', fontFamily: 'Sweet-Affogato' }}>Login</Text>
 					<AuthenticationForm onSubmit={handleSignIn} buttonTitle="Login" isLoading={loading} />
 				</View>
 

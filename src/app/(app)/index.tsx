@@ -36,7 +36,7 @@ export default function HomeScreen() {
 			<ScrollView style={styles.scroll} contentContainerStyle={{ flexGrow: 1 }}>
 				{loading && (<Text>Loading...</Text>)}
 				<View>
-					<Text variant="headlineSmall" style={[styles.title]}>Ice cream truck tracker</Text>
+					<Text variant="headlineSmall" style={[styles.title]}>Frost find</Text>
 				</View>
 				<View style={styles.avatarSection}>
 					<View style={{ borderRadius: 50, minHeight: 50, padding: 0, backgroundColor: 'rgba(230, 230, 230, 0.8)' }}>

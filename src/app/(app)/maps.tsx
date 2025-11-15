@@ -17,7 +17,7 @@ export default function CustomerMapScreen() {
 				flex: 1, borderRadius: 15
 			}} contentStyle={{ flex: 1, }} >
 				<Card.Content style={{ flex: 1 }}>
-					<Text variant="headlineSmall" style={styles.title}>Popsicle trucks</Text>
+					<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
 					<MapView
 						style={{ flex: 1 }}
 						initialRegion={{

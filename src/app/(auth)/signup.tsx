@@ -55,7 +55,7 @@ export default function SignUpScreen() {
 			<View style={styles.container}>
 				<View style={styles.form}>
 					<View >
-						<Text variant="titleLarge" style={{ color: colors.title, textAlign: 'center' }}>Register</Text>
+						<Text variant="titleLarge" style={{ color: colors.title, textAlign: 'center', fontFamily: 'Sweet-Affogat' }}>Register</Text>
 						<AuthenticationForm onSubmit={handleSignUp} buttonTitle="Sign up" isLoading={loading} />
 					</View>
 					<View style={styles.check}>

@@ -25,8 +25,8 @@ export default function IndexScreen() {
 		<OnboardingView image="image2">
 			<View style={{ flex: 1, flexDirection: 'column', paddingVertical: 8 }}>
 				<View style={styles.textSection}>
-					<Text variant="headlineLarge" style={[styles.title, { color: colors.title }]}>Popsicle & Ice Cream Trucks</Text>
-					<Text variant="headlineSmall" style={[styles.subtitle, { color: colors.text }]} >Find Ice Cream Trucks Near You</Text>
+					<Text variant="headlineLarge" style={[styles.title, { color: colors.title }]}>Frost Find</Text>
+					<Text variant="headlineSmall" style={[styles.subtitle, { color: colors.text, fontFamily: 'Sweet-Affogato' }]} >Find Ice Cream Trucks Near You</Text>
 					<Text variant="titleMedium" style={{ color: colors.subtitle, textAlign: 'center' }}>Track real-time locations and never miss your favorite treat</Text>
 				</View>
 				<View style={styles.buttonSection}>
