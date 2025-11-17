@@ -2,7 +2,7 @@ export default {
   "expo": {
     "name": "Frost Find",
     "slug": "frost-find",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "owner": "gerortiz",
     "orientation": "portrait",
     "icon": "./src/assets/images/popsicle.png",
