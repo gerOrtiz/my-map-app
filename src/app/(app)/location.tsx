@@ -15,19 +15,22 @@ export default function DriverLocationScreen() {
 	const { user } = useAuth();
 	if (!user) return <LoadingScreen />
 	const [isActive, setIsActive] = useState(user.isActive || false);
-	const { location, updateDriverShift } = useDriverLocation(user.uid, isActive);
+	const { location, endShift, error, setError } = useDriverLocation(user.uid, isActive);
 	const router = useRouter();
 
 	const handleShiftChange = useCallback(() => {
-		updateDriverShift(!isActive);
+		if (isActive) endShift();
 		setIsActive(prev => !prev);
 	}, []);
-
 
 	const handleReturn = useCallback(() => {
 		router.back();
 	}, []);
 
+	const handleAskLocationPermissionAgain = () => {
+		setError('');
+		if (isActive) setIsActive(false);
+	};
 
 	return (
 		<View style={[styles.container, { justifyContent: 'center' }]}>
@@ -43,9 +46,9 @@ export default function DriverLocationScreen() {
 					{/* <Pressable style={styles.outlineButton} onPress={() => setIsActive(prev => !prev)}>
 						<Text style={{ fontSize: 14, color: 'rgba(5, 2, 204, 1)' }}>{isActive ? 'End shift' : 'Start shift'}</Text>
 					</Pressable> */}
-					<Button mode="outlined" textColor={colors.buttonPrimary} style={{ borderColor: colors.buttonPrimary }} onPress={handleShiftChange}>
+					{!error && <Button mode="outlined" textColor={colors.buttonPrimary} style={{ borderColor: colors.buttonPrimary }} onPress={handleShiftChange}>
 						{isActive ? 'End shift' : 'Start shift'}
-					</Button>
+					</Button>}
 				</View>
 				{location && isActive && (<View style={{ flex: 10, padding: 12 }}>
 					<MapView style={styles.map} region={{
@@ -58,8 +61,16 @@ export default function DriverLocationScreen() {
 					</MapView>
 
 				</View>)}
-				{isActive && !location && (
+				{isActive && !location && !error && (
 					<View style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }}><Skeleton width="100%" height="100%" /></View>
+				)}
+				{isActive && !location && error && (
+					<View style={{ flex: 10, justifyContent: 'center', alignItems: 'center', gap: 15 }}>
+						<Text variant="titleLarge" style={{ color: 'red', textAlign: 'center' }}>Error: You must grant location permissions to get the map view</Text>
+						<Button mode="contained" style={{ justifyContent: 'center', alignSelf: 'center' }} buttonColor={colors.buttonPrimary} onPress={handleAskLocationPermissionAgain} >
+							<Text variant="titleMedium" style={{ color: 'white' }}>Try again</Text>
+						</Button>
+					</View>
 				)}
 			</View>
 

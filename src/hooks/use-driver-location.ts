@@ -13,10 +13,11 @@ export function useDriverLocation(driverId: string, isActive: boolean) {
 	const [location, setLocation] = useState<Coords | null>(null);
 	const [error, setError] = useState<string | null>(null);
 
-	const updateDriverShift = useCallback(async (active: boolean) => {
+	const endShift = useCallback(async () => {
 		const driverRef = doc(db, 'drivers', driverId);
 		await updateDoc(driverRef, {
-			isActive: active
+			isActive: false,
+			timestamp: serverTimestamp()
 		});
 	}, [driverId]);
 
@@ -67,5 +68,5 @@ export function useDriverLocation(driverId: string, isActive: boolean) {
 		};
 	}, [driverId, isActive]);
 
-	return { location, error, updateDriverShift };
+	return { location, error, endShift, setError };
 }

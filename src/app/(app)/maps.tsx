@@ -2,66 +2,78 @@ import { Colors } from '@/src/constants/theme';
 import { useActiveDrivers } from '@/src/hooks/use-active-drivers';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { useCallback } from 'react';
-import { StatusBar, StyleSheet, View } from "react-native";
+import { useCallback, useState } from 'react';
+import { RefreshControl, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import { Card, IconButton, Text } from 'react-native-paper';
 
 const colors = Colors.light;
 
 export default function CustomerMapScreen() {
-	const { drivers, errorMsg } = useActiveDrivers();
-	if (errorMsg) return (<View style={{ flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background }}>
-		<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
-		<Text variant="headlineMedium">You need to grant location permissions to get the map view</Text>
-	</View>
-	);
+	const [refreshing, setRefreshing] = useState(false);
+	const { drivers, errorMsg, userLocation } = useActiveDrivers(refreshing);
 	const router = useRouter();
 	const handleReturn = useCallback(() => {
 		router.back();
 	}, []);
 
+	const onRefresh = useCallback(() => {
+		setRefreshing(true);
+		setTimeout(() => {
+			setRefreshing(false);
+		}, 2000);
+	}, []);
+
 
 	return (
 		<View style={{ flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background }}>
-			<Card style={{
-				flex: 1, borderRadius: 15
-			}} contentStyle={{ flex: 1, }} >
-				<Card.Content style={{ flex: 1, position: 'relative' }}>
-					<View style={{ position: 'absolute', top: 5, left: 1, zIndex: 15 }}>
-						<IconButton size={18} icon="arrow-left" mode="contained-tonal" onPress={handleReturn} />
-					</View>
-					<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
-					{drivers.length === 0 && (
-						<View style={{ width: '80%', alignSelf: 'center', backgroundColor: 'rgba(247, 233, 172, 1)', borderRadius: 20, marginBottom: 10, padding: 3 }}>
-							<Text variant="bodyMedium" style={{ color: 'red', textAlign: 'center' }}>No trucks found near your area</Text>
+			<ScrollView contentContainerStyle={{ flex: 1 }} refreshControl={
+				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+			}>
+				<Card style={{
+					flex: 1, borderRadius: 15
+				}} contentStyle={{ flex: 1, }} >
+					<Card.Content style={{ flex: 1, position: 'relative' }}>
+						<View style={{ position: 'absolute', top: 5, left: 1, zIndex: 15 }}>
+							<IconButton size={18} icon="arrow-left" mode="contained-tonal" onPress={handleReturn} />
 						</View>
-					)}
-					<MapView
-						style={{ flex: 1 }}
-						initialRegion={{
-							latitude: 19.0414,
-							longitude: -98.2063,
-							latitudeDelta: 0.1,
-							longitudeDelta: 0.1,
-						}}
-					>
-						{drivers.map(driver => (
-							<Marker
-								key={driver.id}
-								coordinate={driver.location}
-								title="Ice Cream Truck"
-								description={`Distance: ${driver.distance} kms, ${driver.eta}`}
-							>
-								<Image source={require('@/src/assets/images/truck.png')} style={{ width: 32, height: 32 }} />
-								{/* Image from FlatIcon https://www.flaticon.com/free-icons/delivery-truck */}
-							</Marker>
-						))}
-						<Marker title="Default location" coordinate={{ latitude: 19.024370626890853, longitude: -98.19173625706892 }} />
-					</MapView>
-				</Card.Content>
-
-			</Card>
+						<View style={{ justifyContent: errorMsg ? 'center' : 'flex-start', flex: 1 }}>
+							<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
+							{errorMsg ? (<>
+								<Text variant="titleLarge" style={{ color: colors.subtitle, textAlign: 'center' }}>You need to grant location permissions to get the map view</Text>
+							</>) : (<>
+								{drivers.length === 0 && (
+									<View style={{ width: '80%', alignSelf: 'center', backgroundColor: 'rgba(247, 233, 172, 1)', borderRadius: 20, marginBottom: 10, padding: 3 }}>
+										<Text variant="bodyMedium" style={{ color: 'red', textAlign: 'center' }}>No trucks found near your area</Text>
+									</View>
+								)}
+								<MapView
+									style={{ flex: 1 }}
+									initialRegion={{
+										latitude: 19.04,
+										longitude: -98.20,
+										latitudeDelta: 0.1,
+										longitudeDelta: 0.1,
+									}}
+								>
+									{drivers.map(driver => (
+										<Marker
+											key={driver.id}
+											coordinate={driver.location}
+											title="Ice Cream Truck"
+											description={`Distance: ${driver.distance} kms, ${driver.eta}`}
+										>
+											<Image source={require('@/src/assets/images/truck.png')} style={{ width: 32, height: 32 }} />
+											{/* Image from FlatIcon https://www.flaticon.com/free-icons/delivery-truck */}
+										</Marker>
+									))}
+									{userLocation && <Marker title="Default location" coordinate={userLocation.coords} />}
+								</MapView>
+							</>)}
+						</View>
+					</Card.Content>
+				</Card>
+			</ScrollView>
 
 		</View>
 	);

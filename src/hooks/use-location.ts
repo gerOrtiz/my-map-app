@@ -1,7 +1,7 @@
 import * as Location from 'expo-location';
 import { useCallback, useEffect, useState } from "react";
 
-export function useLocation() {
+export function useLocation(refresh: boolean) {
 	// const [driverLocation, setDriversLocation] = useState<Location.LocationObject | null>(null);
 	const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
 	const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -17,8 +17,9 @@ export function useLocation() {
 	}, []);
 
 	useEffect(() => {
-		getUserLocation().then(setUserLocation)
-	}, []);
+		if (!refresh)
+			getUserLocation().then(setUserLocation);
+	}, [refresh]);
 
 	// useEffect(() => {
 	// 	const interval = setInterval(() => {
@@ -32,6 +33,6 @@ export function useLocation() {
 	// }, [userLocation]);
 
 
-	return { userLocation, errorMsg };
+	return { userLocation, errorMsg, setErrorMsg };
 
 }

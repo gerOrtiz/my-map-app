@@ -254,7 +254,9 @@ This is a portfolio project, but feedback and suggestions are welcome! Feel free
 
 **Android Development Build Available**
 
-Download the latest APK: [Frost Find v1.0.0](https://expo.dev/accounts/gerortiz/projects/frost-find/builds/c05d79f4-bfd4-4783-a01f-3202c5630678)
+Download the latest APK: [Frost Find v1.1.0](https://expo.dev/accounts/gerortiz/projects/frost-find/builds/e58725f1-bc46-4a11-aac5-4104c0b482a8)
+
+*Last updated: [November 16th, 2025]*
 
 *Note: This is a development build for testing. Enable "Install from unknown sources" on your Android device.*
 

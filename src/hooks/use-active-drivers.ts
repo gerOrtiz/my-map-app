@@ -1,5 +1,5 @@
 import { collection, onSnapshot, query, Timestamp, where } from "firebase/firestore";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { db } from "../config/firebaseConfig";
 import { calculateDistance, estimateArrivalTime } from "../utils/distance";
 import { useLocation } from "./use-location";
@@ -18,18 +18,16 @@ type Coords = {
 }
 
 
-export function useActiveDrivers() {
-	const { userLocation, errorMsg } = useLocation();
+export function useActiveDrivers(refresh: boolean) {
+	const { userLocation, errorMsg } = useLocation(refresh);
 	const [drivers, setDrivers] = useState<DriversI[]>([]);
-	const [loading, setLoading] = useState(true);
-
-	const customerLocation = useMemo(() => {
-		if (userLocation && !errorMsg) return userLocation.coords;
-		return null;
-	}, [userLocation]);
+	const [loading, setLoading] = useState(false);
 
 
 	useEffect(() => {
+		if (errorMsg || !userLocation) return;
+		const customerLocation = userLocation.coords;
+		setLoading(true);
 		const q = query(
 			collection(db, 'drivers'),
 			where('isActive', '==', true)
@@ -48,7 +46,7 @@ export function useActiveDrivers() {
 			setLoading(false);
 		});
 		return () => unsubscribe();
-	}, [customerLocation]);
+	}, [errorMsg, userLocation]);
 
-	return { drivers, loading, errorMsg };
+	return { drivers, loading, errorMsg, userLocation };
 }
