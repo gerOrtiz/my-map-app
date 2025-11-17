@@ -250,6 +250,24 @@ This is a portfolio project, but feedback and suggestions are welcome! Feel free
 
 ---
 
+## 📦 Download & Install
+
+**Android Development Build Available**
+
+Download the latest APK: [Frost Find v1.1.0](https://expo.dev/accounts/gerortiz/projects/frost-find/builds/0f92151a-190d-4191-959a-45f1fb514357)
+
+*Last updated: [November 16th, 2025]*
+
+*Note: This is a development build for testing. Enable "Install from unknown sources" on your Android device.*
+
+### Installation Steps:
+1. Download the APK to your Android device
+2. Enable installation from unknown sources in Settings
+3. Open the APK file and install
+4. Launch Frost Find!
+
+---
+
 ## 📬 Contact
 
 **Developer:** [Gerson Ortiz]
@@ -274,6 +292,7 @@ This project is available for portfolio and educational purposes. Please contact
 - Firebase for real-time backend infrastructure
 - Expo team for incredible developer experience
 - Sweet affogato font by - [Sweet Affogato](https://fontbundles.net/stefani-letter/885399-sweet-affogato) font by Stefani Letter via 1001fonts.com
+- Popsicle icon by [Freepik](https://www.flaticon.com/free-icons/ice-cream-stick)
 ---
 
 **Built with ❤️ and a lot of ice cream** 🍦

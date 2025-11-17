@@ -40,13 +40,13 @@ export default function RootLayout() {
 }
 
 function RootNavigator() {
-  const { user } = useAuth();
+  const { authUser } = useAuth();
   return (
     <Stack>
-      <Stack.Protected guard={!!user}>
+      <Stack.Protected guard={!!authUser}>
         <Stack.Screen options={{ headerShown: false }} name="(app)" />
       </Stack.Protected>
-      <Stack.Protected guard={!user}>
+      <Stack.Protected guard={!authUser}>
         <Stack.Screen options={{ headerShown: false }} name="(auth)" />
       </Stack.Protected>
     </Stack>

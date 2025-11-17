@@ -71,13 +71,6 @@ export default function TabLayout() {
 					}}
 				/>
 				<Tabs.Screen
-					name="explore"
-					options={{
-						title: 'Explore',
-						href: null
-					}}
-				/>
-				<Tabs.Screen
 					name="location"
 					options={{
 						title: 'Location',
@@ -102,13 +95,6 @@ export default function TabLayout() {
 				options={{
 					title: 'Location',
 					tabBarIcon: ({ color }) => <Ionicons size={25} name="pin" color={color} />,
-				}}
-			/>
-			<Tabs.Screen
-				name="explore"
-				options={{
-					title: 'Explore',
-					href: null
 				}}
 			/>
 			<Tabs.Screen

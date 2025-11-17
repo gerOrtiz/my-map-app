@@ -2,6 +2,7 @@ import { collection, onSnapshot, query, Timestamp, where } from "firebase/firest
 import { useEffect, useState } from "react";
 import { db } from "../config/firebaseConfig";
 import { calculateDistance, estimateArrivalTime } from "../utils/distance";
+import { useLocation } from "./use-location";
 
 interface DriversI {
 	id: string;
@@ -17,11 +18,16 @@ type Coords = {
 }
 
 
-export function useActiveDrivers(customerLocation: Coords) {
+export function useActiveDrivers(refresh: boolean) {
+	const { userLocation, errorMsg } = useLocation(refresh);
 	const [drivers, setDrivers] = useState<DriversI[]>([]);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
+
 
 	useEffect(() => {
+		if (errorMsg || !userLocation) return;
+		const customerLocation = userLocation.coords;
+		setLoading(true);
 		const q = query(
 			collection(db, 'drivers'),
 			where('isActive', '==', true)
@@ -40,7 +46,7 @@ export function useActiveDrivers(customerLocation: Coords) {
 			setLoading(false);
 		});
 		return () => unsubscribe();
-	}, [customerLocation]);
+	}, [errorMsg, userLocation]);
 
-	return { drivers, loading };
+	return { drivers, loading, errorMsg, userLocation };
 }

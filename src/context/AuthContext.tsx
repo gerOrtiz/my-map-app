@@ -1,12 +1,20 @@
+import { auth, db } from "@/src/config/firebaseConfig";
 import { AuthError, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { auth, db } from "../config/firebaseConfig";
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
+import { UserI } from "../interfaces/user";
 
 type UserRole = 'driver' | 'customer' | null;
 
+interface UserDocI {
+	createdAt: string;
+	email: string;
+	role: Exclude<UserRole, null>
+}
+
 interface AuthContextType {
-	user: User | null;
+	authUser: User | null;
+	user: UserI | null;
 	loading: boolean;
 	userRole: UserRole;
 	signIn: (email: string, password: string) => Promise<void>;
@@ -18,21 +26,47 @@ interface AuthContextType {
 const AuhtContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-	const [user, setUser] = useState<User | null>(null);
+	const [authUser, setAuthUser] = useState<User | null>(null);
+	const [user, setUser] = useState<UserI | null>(null);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<AuthError | null>(null);
 	const [userRole, setUserRole] = useState<UserRole>(null);
 
+	const getUserInfo = useCallback(async (firebaseUser: User): Promise<UserDocI | null> => {
+		const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+		if (userDoc.exists()) return userDoc.data() as UserDocI;
+		return null;
+	}, []);
+
+	const getDriverInfo = useCallback(async (user: UserI) => {
+		const driverDoc = await getDoc(doc(db, 'drivers', user.uid));
+		if (driverDoc.exists()) {
+			user.isActive = driverDoc.data().isActive || false;
+		}
+		return;
+	}, []);
+
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
 			if (firebaseUser) {
-				setUser(firebaseUser);
-				const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-				if (userDoc.exists()) {
-					setUserRole(userDoc.data().role);
+				setAuthUser(firebaseUser);
+				const userDoc = await getUserInfo(firebaseUser);
+				if (userDoc) {
+					setUserRole(userDoc.role);
+					const newUser: UserI = {
+						displayName: firebaseUser.displayName,
+						email: firebaseUser.email,
+						phoneNumber: firebaseUser.phoneNumber,
+						photoURL: firebaseUser.phoneNumber,
+						uid: firebaseUser.uid,
+						role: userDoc.role,
+					};
+					if (userDoc.role === 'driver') await getDriverInfo(newUser);
+					setUser(newUser);
 				}
 			} else {
 				setUser(null);
+				setAuthUser(null);
 				setUserRole(null);
 			}
 
@@ -46,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setLoading(true);
 		setError(null);
 		try {
-			const user = await signInWithEmailAndPassword(auth, email, password);
+			await signInWithEmailAndPassword(auth, email, password);
 		} catch (e: any) {
 			if (e.code) {
 				setError(e);
@@ -102,6 +136,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 	const contextValue = {
 		user,
+		authUser,
 		loading,
 		signIn,
 		signUp,

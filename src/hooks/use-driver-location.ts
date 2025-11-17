@@ -1,7 +1,7 @@
 // hooks/useDriverLocation.ts
 import * as Location from 'expo-location';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { useCallback, useEffect, useState } from 'react';
 import { db } from '../config/firebaseConfig';
 
 interface Coords {
@@ -12,6 +12,14 @@ interface Coords {
 export function useDriverLocation(driverId: string, isActive: boolean) {
 	const [location, setLocation] = useState<Coords | null>(null);
 	const [error, setError] = useState<string | null>(null);
+
+	const endShift = useCallback(async () => {
+		const driverRef = doc(db, 'drivers', driverId);
+		await updateDoc(driverRef, {
+			isActive: false,
+			timestamp: serverTimestamp()
+		});
+	}, [driverId]);
 
 	useEffect(() => {
 		if (!isActive) return; // Only track when driver is active
@@ -60,5 +68,5 @@ export function useDriverLocation(driverId: string, isActive: boolean) {
 		};
 	}, [driverId, isActive]);
 
-	return { location, error };
+	return { location, error, endShift, setError };
 }
