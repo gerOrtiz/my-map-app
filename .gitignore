@@ -42,7 +42,7 @@ app-example
 /ios
 /android
 
-#config
-/src/config
+# env variables
 .env
+.env.local
 

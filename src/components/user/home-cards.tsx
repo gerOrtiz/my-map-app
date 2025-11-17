@@ -1,5 +1,5 @@
+import { UserI } from "@/src/interfaces/user";
 import { useRouter } from "expo-router";
-import { User } from "firebase/auth";
 import { View } from "react-native";
 import { Button, Card, Icon, Text } from "react-native-paper";
 import Skeleton from "../ui/skeleton";
@@ -13,7 +13,7 @@ interface cardsInfoI {
 }
 
 type CardProps = {
-	user: User | null;
+	user: UserI | null;
 	role: 'customer' | 'driver' | null;
 	cards: cardsInfoI[]
 

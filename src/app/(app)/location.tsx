@@ -2,30 +2,48 @@ import Skeleton from "@/src/components/ui/skeleton";
 import { Colors } from "@/src/constants/theme";
 import { useAuth } from "@/src/context/AuthContext";
 import { useDriverLocation } from "@/src/hooks/use-driver-location";
+import { useRouter } from "expo-router";
 
-import { useState } from "react";
-import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
+import { useCallback, useState } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import { Button, Text } from "react-native-paper";
+import { Button, IconButton, Text } from "react-native-paper";
 
 const colors = Colors.light;
 
 export default function DriverLocationScreen() {
 	const { user } = useAuth();
 	if (!user) return <LoadingScreen />
-	const [isActive, setIsActive] = useState(false);
-	const { location } = useDriverLocation(user.uid, isActive);
-	return (
-		<View style={styles.container}>
-			<View style={[styles.card, !isActive ? { minHeight: 150, } : { flex: 1 }]}>
+	const [isActive, setIsActive] = useState(user.isActive || false);
+	const { location, updateDriverShift } = useDriverLocation(user.uid, isActive);
+	const router = useRouter();
 
-				<View style={{ flex: 1, flexDirection: 'column', padding: 3, gap: 5, justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
+	const handleShiftChange = useCallback(() => {
+		updateDriverShift(!isActive);
+		setIsActive(prev => !prev);
+	}, []);
+
+
+	const handleReturn = useCallback(() => {
+		router.back();
+	}, []);
+
+
+	return (
+		<View style={[styles.container, { justifyContent: 'center' }]}>
+			<View style={[styles.card, !isActive ? { minHeight: 250, } : { flex: 1, position: 'relative' }]}>
+				{isActive && (
+					<View style={{ position: 'absolute', top: 5, left: 1, zIndex: 15 }}>
+						<IconButton size={18} icon="arrow-left" mode="contained-tonal" onPress={handleReturn} />
+					</View>
+				)}
+				<View style={{ flex: 1, flexDirection: 'column', padding: 4, gap: 5, justifyContent: 'center', alignItems: 'center', marginVertical: 10 }}>
 					<Text variant="headlineSmall" style={styles.title} >Ice cream delivery</Text>
 					{!isActive && (<Text variant="bodyLarge" style={[styles.fonts]}>To start your shift press the button</Text>)}
 					{/* <Pressable style={styles.outlineButton} onPress={() => setIsActive(prev => !prev)}>
 						<Text style={{ fontSize: 14, color: 'rgba(5, 2, 204, 1)' }}>{isActive ? 'End shift' : 'Start shift'}</Text>
 					</Pressable> */}
-					<Button mode="outlined" textColor={colors.buttonPrimary} style={{ borderColor: colors.buttonPrimary }} onPress={() => setIsActive(prev => !prev)}>
+					<Button mode="outlined" textColor={colors.buttonPrimary} style={{ borderColor: colors.buttonPrimary }} onPress={handleShiftChange}>
 						{isActive ? 'End shift' : 'Start shift'}
 					</Button>
 				</View>
@@ -52,12 +70,12 @@ export default function DriverLocationScreen() {
 
 const LoadingScreen = () => {
 	return (
-		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator size="large" color="blue" /></View>
+		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Skeleton height="100%" width="100%" borderRadius={15} /></View>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: { flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background, justifyContent: 'center' },
+	container: { flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background, },
 	card: {
 		flexDirection: 'column', backgroundColor: '#fff', padding: 5, marginVertical: 5, borderRadius: 20, elevation: 2, gap: 5
 	},

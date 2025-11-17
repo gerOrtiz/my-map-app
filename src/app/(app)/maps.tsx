@@ -1,23 +1,42 @@
 import { Colors } from '@/src/constants/theme';
 import { useActiveDrivers } from '@/src/hooks/use-active-drivers';
 import { Image } from 'expo-image';
+import { useRouter } from 'expo-router';
+import { useCallback } from 'react';
 import { StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
-import { Card, Text } from 'react-native-paper';
+import { Card, IconButton, Text } from 'react-native-paper';
 
 const colors = Colors.light;
 
 export default function CustomerMapScreen() {
-	const { drivers } = useActiveDrivers({ latitude: 19.024370626890853, longitude: -98.19173625706892 });
-	//19.024370626890853, -98.19173625706892
+	const { drivers, errorMsg } = useActiveDrivers();
+	if (errorMsg) return (<View style={{ flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background }}>
+		<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
+		<Text variant="headlineMedium">You need to grant location permissions to get the map view</Text>
+	</View>
+	);
+	const router = useRouter();
+	const handleReturn = useCallback(() => {
+		router.back();
+	}, []);
+
 
 	return (
 		<View style={{ flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background }}>
 			<Card style={{
 				flex: 1, borderRadius: 15
 			}} contentStyle={{ flex: 1, }} >
-				<Card.Content style={{ flex: 1 }}>
+				<Card.Content style={{ flex: 1, position: 'relative' }}>
+					<View style={{ position: 'absolute', top: 5, left: 1, zIndex: 15 }}>
+						<IconButton size={18} icon="arrow-left" mode="contained-tonal" onPress={handleReturn} />
+					</View>
 					<Text variant="headlineSmall" style={styles.title}>Find nearest trucks</Text>
+					{drivers.length === 0 && (
+						<View style={{ width: '80%', alignSelf: 'center', backgroundColor: 'rgba(247, 233, 172, 1)', borderRadius: 20, marginBottom: 10, padding: 3 }}>
+							<Text variant="bodyMedium" style={{ color: 'red', textAlign: 'center' }}>No trucks found near your area</Text>
+						</View>
+					)}
 					<MapView
 						style={{ flex: 1 }}
 						initialRegion={{

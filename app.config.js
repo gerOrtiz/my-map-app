@@ -1,52 +1,58 @@
 export default {
-  "name": "my-map-app",
-  "slug": "my-map-app",
-  "version": "1.0.0",
-  "orientation": "portrait",
-  "icon": "./src/assets/images/icon.png",
-  "scheme": "mymapapp",
-  "userInterfaceStyle": "automatic",
-  "newArchEnabled": true,
-  "ios": {
-    "supportsTablet": true
-  },
-  "android": {
-    "config": {
-      "googleMaps": {
-        "apiKey": process.env.API_KEY
-      }
+  "expo": {
+    "name": "Frost Find",
+    "slug": "frost-find",
+    "version": "1.0.0",
+    "owner": "gerortiz",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/popsicle.png",
+    "scheme": "frostfind",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
     },
-    "adaptiveIcon": {
-      "backgroundColor": "#E6F4FE",
-      "foregroundImage": "./src/assets/images/android-icon-foreground.png",
-      "backgroundImage": "./src/assets/images/android-icon-background.png",
-      "monochromeImage": "./src/assets/images/android-icon-monochrome.png"
-    },
-    "edgeToEdgeEnabled": true,
-    "predictiveBackGestureEnabled": false
-  },
-  "web": {
-    "output": "static",
-    "favicon": "./src/assets/images/favicon.png"
-  },
-  "plugins": [
-    "expo-router",
-    [
-      "expo-splash-screen",
-      {
-        "image": "./src/assets/images/splash-icon.png",
-        "imageWidth": 200,
-        "resizeMode": "contain",
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "backgroundColor": "#000000"
+    "android": {
+      package: "com.gerortiz.frostfind",
+      "config": {
+        "googleMaps": {
+          "apiKey": process.env.GOOGLE_MAPS_API_KEY
         }
+      },
+      "adaptiveIcon": {
+        backgroundColor: "#E6A5CB",
+        foregroundImage: "./src/assets/images/popsicle.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./src/assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/popsicle.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0f15f476-1bbe-485f-bbac-99f2be925a2b"
       }
-    ]
-  ],
-  "experiments": {
-    "typedRoutes": true,
-    "reactCompiler": true
+    }
   }
-
 };
