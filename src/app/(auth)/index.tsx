@@ -23,7 +23,7 @@ export default function IndexScreen() {
 		// 	</View>
 		// </View>
 		<OnboardingView image="image2">
-			<View style={{ flex: 1, flexDirection: 'column', paddingVertical: 8 }}>
+			<View style={{ flex: 1, flexDirection: 'column', padding: 8 }}>
 				<View style={styles.textSection}>
 					<Text variant="headlineLarge" style={[styles.title, { color: colors.title }]}>Frost Find</Text>
 					<Text variant="headlineSmall" style={[styles.subtitle, { color: colors.text, fontFamily: 'Sweet-Affogato' }]} >Find Ice Cream Trucks Near You</Text>

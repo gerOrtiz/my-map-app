@@ -9,17 +9,19 @@ import { useColorScheme } from '@/src/hooks/use-color-scheme';
 import { Ionicons } from '@expo/vector-icons';
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs';
 import { ActivityIndicator, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
 	const { userRole, loading } = useAuth();
+	const insets = useSafeAreaInsets();
 
 	const options: BottomTabNavigationOptions = {
 		tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
 		tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].inactiveTint,
 		headerShown: false,
 		tabBarStyle: {
-			marginBottom: 12,
+			marginBottom: insets.bottom + 8,
 			width: '50%',
 			position: 'absolute',
 			transform: [{ translateX: 90 }],
@@ -32,6 +34,8 @@ export default function TabLayout() {
 			shadowOffset: { width: 5, height: 10 },
 			shadowOpacity: 0.3,
 			shadowRadius: 3.5,
+			maxHeight: 50,
+			paddingBottom: 8,
 		},
 		tabBarLabelStyle: {
 			fontSize: 10,
@@ -48,7 +52,7 @@ export default function TabLayout() {
 
 	if (loading) return (<>
 		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} >
-			<ActivityIndicator size="large" color="red" />
+			<ActivityIndicator size="large" color="pink" />
 		</View>
 	</>);
 

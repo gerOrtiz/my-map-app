@@ -21,49 +21,16 @@ export default function SignUpScreen() {
 		router.replace('/login');
 	};
 	return (
-		// <ParallaxScrollView
-		// 	headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-		// 	headerImage={
-		// 		<Image
-		// 			source={require('@/src/assets/images/android-icon-foreground.png')}
-		// 			style={styles.reactLogo}
-		// 		/>
-		// 	}>
-		// 	<ThemedView style={styles.titleContainer}>
-		// 		<ThemedText type="title">Map tracker app</ThemedText>
-		// 	</ThemedView>
-		// 	<ThemedView style={styles.titleContainer}>
-		// 		<ThemedText type="subtitle">Register</ThemedText>
-		// 	</ThemedView>
-		// 	<ThemedView style={{ flex: 1, flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-		// 		<ThemedText type="default" >Have an account already?</ThemedText>
-		// 		<ThemedText type="link" >
-		// 			<Link href="/(auth)/login" >Login</Link>
-		// 		</ThemedText>
-
-		// 	</ThemedView>
-		// 	<ThemedView>
-		// 		<AuthenticationForm onSubmit={handleSignUp} buttonTitle="Sign up" isLoading={loading} />
-		// 		<View style={{ flex: 1, flexDirection: 'row', gap: 8, alignItems: 'center', justifyContent: 'center', marginTop: 12 }}>
-		// 			<Text variant="bodyLarge">Sign up as driver?</Text>
-		// 			<Checkbox status={isDriver ? 'checked' : 'unchecked'} onPress={() => setIsDriver(prev => !prev)} />
-		// 		</View>
-
-		// 	</ThemedView>
-		// </ParallaxScrollView>
 		<OnboardingView image="image1" showNavigation={true}>
 			<View style={styles.container}>
 				<View style={styles.form}>
-					<View >
-						<Text variant="titleLarge" style={{ color: colors.title, textAlign: 'center', fontFamily: 'Sweet-Affogat' }}>Register</Text>
-						<AuthenticationForm onSubmit={handleSignUp} buttonTitle="Sign up" isLoading={loading} />
-					</View>
-					<View style={styles.check}>
-						<Text variant="bodyLarge" style={{ textAlign: 'center', color: colors.subtitle }}>Sign up as driver?</Text>
-						<Checkbox color={colors.buttonPrimary} status={isDriver ? 'checked' : 'unchecked'} onPress={() => setIsDriver(prev => !prev)} />
-					</View>
+					<Text variant="titleLarge" style={{ color: colors.title, textAlign: 'center', fontFamily: 'Sweet-Affogato' }}>Register</Text>
+					<AuthenticationForm onSubmit={handleSignUp} buttonTitle="Sign up" isLoading={loading} />
 				</View>
-
+				<View style={styles.check}>
+					<Text variant="bodyLarge" style={{ textAlign: 'center', color: colors.title }}>Sign up as driver?</Text>
+					<Checkbox color={colors.buttonPrimary} status={isDriver ? 'checked' : 'unchecked'} onPress={() => setIsDriver(prev => !prev)} />
+				</View>
 				<View style={{ flex: 1, flexDirection: 'row', gap: 5, justifyContent: 'center' }} >
 					<Text variant="labelLarge">Have an account already?</Text>
 					<Text variant="labelLarge" style={{ color: colors.title }} onPress={goTo}>Login</Text>

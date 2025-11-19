@@ -13,7 +13,8 @@ export default {
       "supportsTablet": true
     },
     "android": {
-      package: "com.gerortiz.frostfind",
+      "package": "com.gerortiz.frostfind",
+      "softwareKeyboardLayoutMode": "pan",
       "config": {
         "googleMaps": {
           "apiKey": process.env.GOOGLE_MAPS_API_KEY

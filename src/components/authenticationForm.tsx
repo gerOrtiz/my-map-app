@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Text, View } from "react-native";
-import { Button, DefaultTheme, TextInput as Input, Provider as PaperProvider } from "react-native-paper";
+import { Button, TextInput as Input } from "react-native-paper";
 import { useAuth } from "../context/AuthContext";
 
 interface Props {
@@ -12,51 +12,43 @@ interface Props {
 export default function AuthenticationForm({ onSubmit, buttonTitle, isLoading }: Props) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
 	const { error } = useAuth();
 
 	const handlePress = async () => {
 		onSubmit(email, password);
 	};
 
-	const theme = useMemo(() => {
-		return {
-			...DefaultTheme,
-			colors: {
-				...DefaultTheme.colors,
-				onSurfaceVariant: 'rgba(150, 150, 150, 1)',
-			},
-		};
-	}, []);
 
 	return (<>
 		<View style={{ flex: 1, gap: 10 }}>
 			<View style={{ flexDirection: 'column', gap: 8 }}>
 				<Text style={{ color: 'rgba(255, 2, 129, 1)', marginLeft: 2 }}>Email</Text>
-				{/* <TextInput style={styles.input} value={email} onChangeText={setEmail} placeholder="Email" inputMode="email" autoComplete="email" /> */}
-				<PaperProvider theme={theme}>
-					<Input
-						mode="outlined"
-						aria-label="Email"
-						value={email} onChangeText={setEmail}
-						placeholder="example@mail.com" inputMode="email" autoComplete="email"
-						outlineStyle={{ borderRadius: 15, }} style={{ height: 40, fontSize: 15, }}
-						outlineColor="pink" activeOutlineColor="rgba(255, 0, 119, 1)" textColor="gray"
-					/>
-				</PaperProvider>
+				<Input
+					mode="outlined"
+					aria-label="Email"
+					value={email} onChangeText={setEmail}
+					placeholder="example@mail.com" inputMode="email" autoComplete="email"
+					outlineStyle={{ borderRadius: 15, }} style={{ height: 40, fontSize: 15, }}
+					outlineColor="pink" activeOutlineColor="rgba(255, 0, 119, 1)" textColor="gray"
+					placeholderTextColor="gray" selectionColor="blue"
+				/>
 			</View>
 			<View style={{ flexDirection: 'column', gap: 8 }}>
 				<Text style={{ color: 'rgba(255, 2, 129, 1)', marginLeft: 2 }}>Password</Text>
 				{/* <TextInput style={styles.input} value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry /> */}
-				<PaperProvider theme={theme}>
-					<Input
-						mode="outlined"
-						aria-label="Email"
-						value={password} onChangeText={setPassword}
-						placeholder="Password" inputMode="text" secureTextEntry
-						outlineStyle={{ borderRadius: 15, }} style={{ height: 40, fontSize: 15, }}
-						outlineColor="pink" activeOutlineColor="rgba(255, 0, 119, 1)" textColor="gray"
-					/>
-				</PaperProvider>
+
+				<Input
+					mode="outlined"
+					aria-label="Password"
+					value={password} onChangeText={setPassword}
+					placeholder="Password" inputMode="text" secureTextEntry={!showPassword}
+					outlineStyle={{ borderRadius: 15, }} style={{ height: 40, fontSize: 15, }}
+					outlineColor="pink" activeOutlineColor="rgba(255, 0, 119, 1)" textColor="gray"
+					placeholderTextColor="gray"
+					right={<Input.Icon icon={!showPassword ? 'eye' : 'eye-closed'} color="gray" rippleColor="pink" onPress={() => setShowPassword(prev => !prev)} />}
+				/>
+
 			</View>
 
 			{/* <Pressable style={[styles.button, { backgroundColor: isLoading ? 'rgba(165, 165, 165, 1)' : 'blue' }]} onPress={handlePress} disabled={isLoading}>

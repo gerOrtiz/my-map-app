@@ -6,6 +6,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl, ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
 import { Card, IconButton, Text } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const colors = Colors.light;
 
@@ -13,6 +14,8 @@ export default function CustomerMapScreen() {
 	const [refreshing, setRefreshing] = useState(false);
 	const { drivers, errorMsg, userLocation } = useActiveDrivers(refreshing);
 	const router = useRouter();
+	const insets = useSafeAreaInsets();
+
 	const handleReturn = useCallback(() => {
 		router.back();
 	}, []);
@@ -26,8 +29,8 @@ export default function CustomerMapScreen() {
 
 
 	return (
-		<View style={{ flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background }}>
-			<ScrollView contentContainerStyle={{ flex: 1 }} refreshControl={
+		<View style={{ flex: 1, paddingHorizontal: 8, backgroundColor: colors.background, paddingTop: StatusBar.currentHeight, paddingBottom: insets.bottom }}>
+			<ScrollView contentContainerStyle={{ flex: 1, paddingBottom: 3 }} refreshControl={
 				<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 			}>
 				<Card style={{
@@ -74,7 +77,6 @@ export default function CustomerMapScreen() {
 					</Card.Content>
 				</Card>
 			</ScrollView>
-
 		</View>
 	);
 }
