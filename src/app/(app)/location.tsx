@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { StatusBar, StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { Button, IconButton, Text } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const colors = Colors.light;
 
@@ -17,6 +18,7 @@ export default function DriverLocationScreen() {
 	const [isActive, setIsActive] = useState(user.isActive || false);
 	const { location, endShift, error, setError } = useDriverLocation(user.uid, isActive);
 	const router = useRouter();
+	const insets = useSafeAreaInsets();
 
 	const handleShiftChange = useCallback(() => {
 		if (isActive) endShift();
@@ -33,7 +35,8 @@ export default function DriverLocationScreen() {
 	};
 
 	return (
-		<View style={[styles.container, { justifyContent: 'center' }]}>
+		<View style={[styles.container, { justifyContent: 'center', paddingBottom: insets.bottom }]}>
+
 			<View style={[styles.card, !isActive ? { minHeight: 250, } : { flex: 1, position: 'relative' }]}>
 				{isActive && (
 					<View style={{ position: 'absolute', top: 5, left: 1, zIndex: 15 }}>
@@ -74,7 +77,9 @@ export default function DriverLocationScreen() {
 				)}
 			</View>
 
+
 		</View>
+
 
 	);
 }
@@ -86,7 +91,7 @@ const LoadingScreen = () => {
 };
 
 const styles = StyleSheet.create({
-	container: { flex: 1, padding: 8, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background, },
+	container: { flex: 1, padding: 8, backgroundColor: colors.background, paddingTop: StatusBar.currentHeight },
 	card: {
 		flexDirection: 'column', backgroundColor: '#fff', padding: 5, marginVertical: 5, borderRadius: 20, elevation: 2, gap: 5
 	},

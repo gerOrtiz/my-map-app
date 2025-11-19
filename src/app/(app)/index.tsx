@@ -4,13 +4,13 @@ import { Pressable, ScrollView, StatusBar, StyleSheet, View } from 'react-native
 import HomeCards from '@/src/components/user/home-cards';
 import { Colors } from '@/src/constants/theme';
 import { useAuth } from '@/src/context/AuthContext';
-import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Icon, IconButton, Text } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 const colors = Colors.light;
 export default function HomeScreen() {
 	const { logOut, user, userRole, loading } = useAuth();
-	const router = useRouter();
+	const insets = useSafeAreaInsets();
 
 	const handleSignOut = async () => {
 		try {
@@ -32,7 +32,7 @@ export default function HomeScreen() {
 	}, []);
 
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, { paddingBottom: insets.bottom }]}>
 			<ScrollView style={styles.scroll} contentContainerStyle={{ flexGrow: 1 }}>
 				{loading && (<Text>Loading...</Text>)}
 				<View>
@@ -73,7 +73,9 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1, paddingTop: StatusBar.currentHeight, backgroundColor: colors.background
+		flex: 1,
+		paddingTop: StatusBar.currentHeight,
+		backgroundColor: colors.background
 	}, scroll: {
 		flex: 1, padding: 12, overflow: 'visible'
 	},
