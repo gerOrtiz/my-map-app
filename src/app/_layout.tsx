@@ -8,49 +8,50 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { SplashScreenController } from '../components/splash';
 import { AuthProvider, useAuth } from '../context/AuthContext';
+import '../services/backgroundLocationTask';
 
 export const unstable_settings = {
-  anchor: '(app)',
+	anchor: '(app)',
 };
 
 SplashScreen.preventAutoHideAsync();
 Splash.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+	const colorScheme = useColorScheme();
 
-  const [fontsLoaded] = useFonts({
-    'Sweet-Affogato': require('@/src/assets/fonts/Sweet-Affogato.ttf')
-  });
+	const [fontsLoaded] = useFonts({
+		'Sweet-Affogato': require('@/src/assets/fonts/Sweet-Affogato.ttf')
+	});
 
-  useEffect(() => {
-    if (fontsLoaded) Splash.hideAsync();
-  }, [fontsLoaded]);
+	useEffect(() => {
+		if (fontsLoaded) Splash.hideAsync();
+	}, [fontsLoaded]);
 
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AuthProvider>
-        <SplashScreenController />
-        <RootNavigator />
-      </AuthProvider>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+			<AuthProvider>
+				<SplashScreenController />
+				<RootNavigator />
+			</AuthProvider>
+			<StatusBar style="auto" />
+		</ThemeProvider>
+	);
 }
 
 function RootNavigator() {
-  const { authUser } = useAuth();
-  return (
-    <Stack>
-      <Stack.Protected guard={!!authUser}>
-        <Stack.Screen options={{ headerShown: false }} name="(app)" />
-      </Stack.Protected>
-      <Stack.Protected guard={!authUser}>
-        <Stack.Screen options={{ headerShown: false }} name="(auth)" />
-      </Stack.Protected>
-    </Stack>
-  );
+	const { authUser } = useAuth();
+	return (
+		<Stack>
+			<Stack.Protected guard={!!authUser}>
+				<Stack.Screen options={{ headerShown: false }} name="(app)" />
+			</Stack.Protected>
+			<Stack.Protected guard={!authUser}>
+				<Stack.Screen options={{ headerShown: false }} name="(auth)" />
+			</Stack.Protected>
+		</Stack>
+	);
 }
 
 // export default function RootLayout() {

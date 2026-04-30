@@ -46,7 +46,7 @@ export default function AuthenticationForm({ onSubmit, buttonTitle, isLoading }:
 					outlineStyle={{ borderRadius: 15, }} style={{ height: 40, fontSize: 15, }}
 					outlineColor="pink" activeOutlineColor="rgba(255, 0, 119, 1)" textColor="gray"
 					placeholderTextColor="gray"
-					right={<Input.Icon icon={!showPassword ? 'eye' : 'eye-closed'} color="gray" rippleColor="pink" onPress={() => setShowPassword(prev => !prev)} />}
+					right={<Input.Icon icon={!showPassword ? 'eye-closed' : 'eye'} color="gray" rippleColor="pink" onPress={() => setShowPassword(prev => !prev)} />}
 				/>
 
 			</View>

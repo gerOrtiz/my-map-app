@@ -34,6 +34,9 @@ export default function DriverLocationScreen() {
 		if (isActive) setIsActive(false);
 	};
 
+	const hasCriticalError = error && error.includes('Location permission is required');
+	const hasBackgroundWarning = error && error.includes('Background location not enabled');
+
 	return (
 		<View style={[styles.container, { justifyContent: 'center', paddingBottom: insets.bottom }]}>
 
@@ -49,28 +52,59 @@ export default function DriverLocationScreen() {
 					{/* <Pressable style={styles.outlineButton} onPress={() => setIsActive(prev => !prev)}>
 						<Text style={{ fontSize: 14, color: 'rgba(5, 2, 204, 1)' }}>{isActive ? 'End shift' : 'Start shift'}</Text>
 					</Pressable> */}
-					{!error && <Button mode="outlined" textColor={colors.buttonPrimary} style={{ borderColor: colors.buttonPrimary }} onPress={handleShiftChange}>
-						{isActive ? 'End shift' : 'Start shift'}
-					</Button>}
-				</View>
-				{location && isActive && (<View style={{ flex: 10, padding: 12 }}>
-					<MapView style={styles.map} region={{
-						latitude: location.latitude,
-						longitude: location.longitude,
-						latitudeDelta: 0.03,
-						longitudeDelta: 0.03
-					}}>
-						<Marker coordinate={location} title="Current location" />
-					</MapView>
+					{!hasCriticalError && (
+						<Button mode="outlined"
+							textColor={colors.buttonPrimary}
+							style={{ borderColor: colors.buttonPrimary }}
+							onPress={handleShiftChange}>
+							{isActive ? 'End shift' : 'Start shift'}
+						</Button>
+					)}
+					{/* Show background warning if active and tracking works but no background permission */}
 
-				</View>)}
-				{isActive && !location && !error && (
-					<View style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }}><Skeleton width="100%" height="100%" /></View>
+
+				</View>
+				{isActive && hasBackgroundWarning && location && (
+					<View style={{ padding: 12, marginTop: 8, maxHeight: 150 }}>
+						<View style={{ backgroundColor: '#FFF3CD', padding: 8, borderRadius: 8 }}>
+							<Text variant="bodySmall" style={{ color: '#856404', textAlign: 'center' }}>
+								⚠️ Background tracking disabled. Location will only update while app is open.
+							</Text>
+						</View>
+
+					</View>
 				)}
-				{isActive && !location && error && (
+				{location && isActive && (
+					<View style={{ flex: 10, padding: 12 }}>
+						<MapView style={styles.map} region={{
+							latitude: location.latitude,
+							longitude: location.longitude,
+							latitudeDelta: 0.03,
+							longitudeDelta: 0.03
+						}}>
+							<Marker coordinate={location} title="Current location" />
+						</MapView>
+
+					</View>)}
+				{/* Loading state */}
+				{isActive && !location && !hasCriticalError && (
+					<View style={{ flex: 10, justifyContent: 'center', alignItems: 'center' }}>
+						<Skeleton width="100%" height="100%" />
+					</View>
+				)}
+				{/* Critical error view (no location permission at all) */}
+				{isActive && hasCriticalError && (
 					<View style={{ flex: 10, justifyContent: 'center', alignItems: 'center', gap: 15 }}>
-						<Text variant="titleLarge" style={{ color: 'red', textAlign: 'center' }}>Error: You must grant location permissions to get the map view</Text>
-						<Button mode="contained" style={{ justifyContent: 'center', alignSelf: 'center' }} buttonColor={colors.buttonPrimary} onPress={handleAskLocationPermissionAgain} >
+						{/* <Text variant="titleLarge" style={{ color: 'red', textAlign: 'center' }}>Error: You must grant location permissions to get the map view</Text> */}
+						<Text variant="titleLarge" style={{ color: 'red', textAlign: 'center' }}>
+							{error}
+						</Text>
+
+						<Button
+							mode="contained"
+							style={{ justifyContent: 'center', alignSelf: 'center' }}
+							buttonColor={colors.buttonPrimary
+							} onPress={handleAskLocationPermissionAgain} >
 							<Text variant="titleMedium" style={{ color: 'white' }}>Try again</Text>
 						</Button>
 					</View>
@@ -102,7 +136,8 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		marginBottom: 10,
 		fontFamily: 'Sweet-Affogato',
-		color: colors.title
+		color: colors.title,
+		paddingTop: 5
 	},
 	fonts: { marginBottom: 8 },
 	outlineButton: {

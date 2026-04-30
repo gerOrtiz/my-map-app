@@ -2,7 +2,7 @@ export default {
   "expo": {
     "name": "Frost Find",
     "slug": "frost-find",
-    "version": "1.1.0",
+    "version": "1.0.0",
     "owner": "gerortiz",
     "orientation": "portrait",
     "icon": "./src/assets/images/popsicle.png",
@@ -43,6 +43,12 @@ export default {
           "dark": {
             "backgroundColor": "#000000"
           }
+        }
+      ], [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Frost Find to track your location to show customers where you are.",
+          "isAndroidBackgroundLocationEnabled": true
         }
       ]
     ],
